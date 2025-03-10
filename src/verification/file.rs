@@ -1,5 +1,5 @@
 
-use secp256k1::{Message, PublicKey, Secp256k1, Signature};
+use secp256k1::{Message, PublicKey, Secp256k1, ecdsa::Signature};
 use sha3::{Digest, Keccak256};
 use std::fs::{self, File};
 use std::io::Read;
@@ -21,10 +21,8 @@ pub fn verify_file(
     let public_key_bytes = hex::decode(public_key_hex.trim())?;
     let public_key = PublicKey::from_slice(&public_key_bytes)?;
     
-    let mut signature_bytes = [0u8; 64]; 
-    let mut signature_file = File::open(signature_path)?;
-    signature_file.read_exact(&mut signature_bytes)?;
-    let signature = Signature::from_compact(&signature_bytes)?;
+    let signature_data = fs::read(signature_path)?;
+    let signature = Signature::from_compact(&signature_data)?;
     
     let message = Message::from_digest_slice(hash.as_slice())?;
     

@@ -3,7 +3,6 @@ use secp256k1::{Message, Secp256k1, SecretKey};
 use sha3::{Digest, Keccak256};
 use std::fs::{self, File};
 use std::io::{Read, Write};
-use std::path::Path;
 
 pub fn sign_file(
     file_path: &str, 
@@ -28,6 +27,7 @@ pub fn sign_file(
     
     let secp = Secp256k1::new();
     let signature = secp.sign_ecdsa(&message, &secret_key);
+
     let signature_bytes = signature.serialize_compact();
     
 
