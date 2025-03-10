@@ -15,10 +15,8 @@ pub fn generate_keypair(private_key_hex: Option<String>) -> Result<(), Box<dyn s
         },
         None => {
             let mut rng = OsRng::default();
-            // Generate random bytes for the key
             let mut random_bytes = [0u8; 32];
             rng.fill_bytes(&mut random_bytes);
-            // Create a key from these random bytes, retry if invalid
             loop {
                 if let Ok(key) = SecretKey::from_slice(&random_bytes) {
                     break key;
